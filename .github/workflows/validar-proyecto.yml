@@ -1,31 +1,58 @@
-name: Validar proyecto AulaReserva
+name: Revisar AulaReserva
 
 on:
   push:
-    branches:
-      - develop
-      - 'feature/**'
+    branches: [develop, "feature/**"]
 
   pull_request:
-    branches:
-      - develop
+    branches: [develop]
 
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: revisar-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  validar:
+  frontend:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Descargar repositorio
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - name: Validar estructura
-        id: validar
+      - name: Comprobar archivos frontend
         uses: ./.github/actions/validar-aulareserva
         with:
-          rutas: README.md frontend/index.html frontend/app.js backend/public/index.php .github/actions/validar-aulareserva/action.yml .github/workflows/validar-proyecto.yml
+          rutas: |
+            frontend/index.html
+            frontend/app.js
 
-      - name: Mostrar resultado
+      - name: Comprobar sintaxis JavaScript
+        run: node --check frontend/app.js
+
+  backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Comprobar archivos backend
+        uses: ./.github/actions/validar-aulareserva
+        with:
+          rutas: |
+            backend/index.php
+
+      - name: Comprobar sintaxis PHP
         run: |
-          echo "Rutas verificadas: ${{ steps.validar.outputs.total }}"
+          php -l backend/index.php
+
+  resultado:
+    needs: [frontend, backend]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Mostrar resultado final
+        run: echo "Frontend y backend correctos"
