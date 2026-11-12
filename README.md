@@ -20,5 +20,5 @@ AulaReserva es una aplicación web destinada a consultar aulas disponibles y ges
 
 ## Objetivo
 
-Crear una aplicación web que permita consultar aulas y, en futuras fases, gestionar sus reservas
+Crear una aplicación web que permita consultar aulas y, en futuras fases, gestionar sus reservas.
 
