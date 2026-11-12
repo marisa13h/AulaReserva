@@ -1,15 +1,24 @@
+
 # AulaReserva
 
-Aula reserva va a ser una aplicación web para consultar las aulas que están disponibles y cuales no. Si están disponibles podrás reservarlas pero si no lo están no podrás hacerlo.
+AulaReserva es una aplicación web destinada a consultar aulas disponibles y gestionar sus reservas.
 
-**Tecnologías que vamos a utilizar:**
+## Tecnologías utilizadas
 
- - HTML
- - JavaScript
- - PHP
- - Git y Github
- - Github Actions
+- HTML5
+- CSS3
+- JavaScript
+- PHP
+- GitHub Actions
 
-### Estado del proyecto
+## Estructura
 
-Actualmente el proyecto está en Fase inicial donde estamos creando el repositorio, sus carpetas, archivos, subir el repositorio a github y crear nuestras Github actions.
+- `frontend/`: interfaz de usuario.
+- `backend/`: API desarrollada en PHP.
+- `.github/actions/`: acciones locales reutilizables.
+- `.github/workflows/`: automatizaciones del proyecto.
+
+## Objetivo
+
+Crear una aplicación web que permita consultar aulas y, en futuras fases, gestionar sus reservas.
+
