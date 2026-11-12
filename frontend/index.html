@@ -1,55 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AulaReserva</title>
-</head>
+  </head>
 
-<body>
+  <body>
+    <div class="contenedor">
+      <h1>AulaReserva</h1>
 
-<div class="contenedor">
+      <h2>Aulas disponibles</h2>
 
-    <h1>AulaReserva</h1>
+      <section id="lista-aulas">Cargando aulas...</section>
 
-    <h2>Aulas disponibles</h2>
+      <h2>Solicitar una reserva</h2>
 
-    <section id="lista-aulas">
-        Cargando aulas...
-    </section>
-
-    <h2>Solicitar una reserva</h2>
-
-    <form id="formulario-reserva">
-
+      <form id="formulario-reserva">
         <label for="aula">Selecciona un aula:</label>
         <select id="aula" required>
-            <option value="">Selecciona un aula</option>
+          <option value="">Selecciona un aula</option>
         </select>
 
         <label for="fecha">Fecha:</label>
-        <input type="date" id="fecha" required>
+        <input type="date" id="fecha" required />
 
         <label for="hora">Hora:</label>
-        <input type="time" id="hora" required>
+        <input type="time" id="hora" required />
 
         <label for="responsable">Responsable:</label>
         <input
-            type="text"
-            id="responsable"
-            placeholder="Nombre del responsable"
-            required
-        >
+          type="text"
+          id="responsable"
+          placeholder="Nombre del responsable"
+          required
+        />
 
         <button type="submit">Solicitar reserva</button>
 
         <p id="mensaje"></p>
+      </form>
 
-    </form>
+      <section>
+        <h2>Reservas registradas</h2>
+        <div id="lista-reservas">Cargando reservas...</div>
+      </section>
+    </div>
 
-</div>
-
-<script src="app.js"></script>
-
-</body>
+    <script src="app.js" defer></script>
+  </body>
 </html>

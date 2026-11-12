@@ -102,23 +102,21 @@ if ($metodo === 'POST' && $ruta === '/api/reservas') {
 
     } catch (PDOException $e) {
 
-        // Reserva duplicada
-        if (
-            $e->getCode() === '23000' ||
-            str_contains($e->getMessage(), 'UNIQUE constraint failed')
-        ) {
+        // Comprobar si la reserva está duplicada
+        if (str_contains($e->getMessage(), 'UNIQUE constraint failed')) {
             responder(409, [
                 'error' => 'El aula ya está reservada en esa fecha y hora'
             ]);
         }
 
-        // Aula inexistente u otro error de integridad
-        if ($e->getCode() === '23000') {
+        // Comprobar si el aula no existe
+        if (str_contains($e->getMessage(), 'FOREIGN KEY constraint failed')) {
             responder(400, [
-                'error' => 'Los datos de la reserva no son válidos'
+                'error' => 'El aula indicada no existe'
             ]);
         }
 
+        // Cualquier otro error
         responder(500, [
             'error' => 'Error al guardar la reserva'
         ]);
