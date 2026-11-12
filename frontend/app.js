@@ -1,4 +1,3 @@
-
 const contenedor = document.getElementById("lista-aulas");
 const selectorAula = document.getElementById("aula");
 const formulario = document.getElementById("formulario-reserva");
