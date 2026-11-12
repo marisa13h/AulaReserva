@@ -1,38 +1,31 @@
-name: Validar AulaReserva
+name: Validar proyecto AulaReserva
 
-description: Comprueba que existen las rutas principales del proyecto
+on:
+  push:
+    branches:
+      - develop
+      - 'feature/**'
 
-inputs:
-  rutas:
-    description: Rutas que queremos comprobar separadas por espacios
-    required: true
+  pull_request:
+    branches:
+      - develop
 
-outputs:
-  total:
-    description: Número de rutas verificadas
-    value: ${{ steps.validar.outputs.total }}
+  workflow_dispatch:
 
-runs:
-  using: composite
+jobs:
+  validar:
+    runs-on: ubuntu-latest
 
-  steps:
-    - name: Comprobar rutas
-      id: validar
-      shell: bash
-      run: |
-        total=0
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v7
 
-        for ruta in ${{ inputs.rutas }}; do
+      - name: Validar estructura
+        id: validar
+        uses: ./.github/actions/validar-aulareserva
+        with:
+          rutas: README.md frontend/index.html frontend/app.js backend/public/index.php .github/actions/validar-aulareserva/action.yml .github/workflows/validar-proyecto.yml
 
-          if [ -e "$ruta" ]; then
-            echo "OK: $ruta existe"
-            total=$((total + 1))
-          else
-            echo "ERROR: $ruta no existe"
-            exit 1
-          fi
-
-        done
-
-        echo "total=$total" >> "$GITHUB_OUTPUT"
-        echo "Total de rutas verificadas: $total"
+      - name: Mostrar resultado
+        run: |
+          echo "Rutas verificadas: ${{ steps.validar.outputs.total }}"
