@@ -28,8 +28,9 @@ jobs:
             README.md
             frontend/index.html
             frontend/app.js
-            backend//public/index.php
+            backend/public/index.php
             .github/actions/validar-aulareserva/action.yml
+            .github/workflows/validar-proyecto.yml
 
       - name: Mostrar resultado
         run: echo "Se han verificado ${{ steps.validar.outputs.total }} rutas"
