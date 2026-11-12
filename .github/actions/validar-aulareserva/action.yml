@@ -1,5 +1,4 @@
 name: Validar AulaReserva
-
 description: Comprueba que existen las rutas principales del proyecto
 
 inputs:
@@ -14,7 +13,6 @@ outputs:
 
 runs:
   using: composite
-
   steps:
     - name: Comprobar rutas
       id: validar

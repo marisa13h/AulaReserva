@@ -1,6 +1,15 @@
-name: Validar proyecto AulaReserva
+name: Validar AulaReserva
 
 on:
+  push:
+    branches:
+      - develop
+      - "feature/**"
+
+  pull_request:
+    branches:
+      - develop
+
   workflow_dispatch:
 
 jobs:
@@ -21,7 +30,7 @@ jobs:
             frontend/app.js
             backend/public/index.php
             .github/actions/validar-aulareserva/action.yml
+            .github/workflows/validar-proyecto.yml
 
       - name: Mostrar resultado
-        run: |
-          echo "Rutas verificadas: ${{ steps.validar.outputs.total }}"
+        run: echo "Se han verificado ${{ steps.validar.outputs.total }} rutas"
