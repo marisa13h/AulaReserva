@@ -46,7 +46,7 @@ if (
 }
 
 // Preparar la respuesta correcta
-http_response_code(201)
+http_response_code(201);
 
 echo json_encode([
     "mensaje" => "Reserva recibida correctamente",
