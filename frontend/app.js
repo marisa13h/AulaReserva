@@ -4,7 +4,7 @@ const formulario = document.getElementById("formulario-reserva");
 const mensaje = document.getElementById("mensaje");
 
 // 1. Obtener las aulas desde PHP
-fetch("http://localhost:8000")
+fetch("http://localhost:8000/api/aulas")
     .then(response => {
         if (!response.ok) {
             throw new Error("Error al obtener las aulas");
@@ -88,7 +88,7 @@ formulario.addEventListener("submit", async function(event) {
 
         // Enviar los datos a PHP
         const respuesta = await fetch(
-            "http://localhost:8000/reservas.php",
+            "http://localhost:8000/api/reservas",
             {
                 method: "POST",
 
