@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AulaReserva</title>
 </head>
+
 <body>
+
+<div class="contenedor">
 
     <h1>AulaReserva</h1>
 
@@ -15,7 +18,38 @@
         Cargando aulas...
     </section>
 
-    <script src="app.js"></script>
+    <h2>Solicitar una reserva</h2>
+
+    <form id="formulario-reserva">
+
+        <label for="aula">Selecciona un aula:</label>
+        <select id="aula" required>
+            <option value="">Selecciona un aula</option>
+        </select>
+
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" required>
+
+        <label for="hora">Hora:</label>
+        <input type="time" id="hora" required>
+
+        <label for="responsable">Responsable:</label>
+        <input
+            type="text"
+            id="responsable"
+            placeholder="Nombre del responsable"
+            required
+        >
+
+        <button type="submit">Solicitar reserva</button>
+
+        <p id="mensaje"></p>
+
+    </form>
+
+</div>
+
+<script src="app.js"></script>
 
 </body>
 </html>

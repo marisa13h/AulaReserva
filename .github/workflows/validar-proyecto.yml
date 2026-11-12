@@ -1,6 +1,15 @@
 name: Validar proyecto AulaReserva
 
 on:
+  push:
+    branches:
+      - develop
+      - 'feature/**'
+
+  pull_request:
+    branches:
+      - develop
+
   workflow_dispatch:
 
 jobs:
@@ -9,9 +18,9 @@ jobs:
 
     steps:
       - name: Descargar repositorio
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
 
-      - name: Validar estructura del proyecto
+      - name: Validar estructura
         id: validar
         uses: ./.github/actions/validar-aulareserva
         with:
@@ -19,9 +28,9 @@ jobs:
             README.md
             frontend/index.html
             frontend/app.js
-            frontend/no-existe.html
             backend/public/index.php
             .github/actions/validar-aulareserva/action.yml
+            .github/workflows/validar-proyecto.yml
 
       - name: Mostrar resultado
         run: |
