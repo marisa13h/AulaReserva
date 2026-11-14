@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Descargar repositorio
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Generar configuración
         env:
@@ -30,7 +30,7 @@ jobs:
 
           cat frontend/config.js
 
-      
+     
       - name: Preparar entrega
         run: |
           mkdir -p dist/frontend dist/backend dist/database dist/data
@@ -39,6 +39,15 @@ jobs:
           cp -r backend/. dist/backend/
           cp -r database/. dist/database/
 
+          touch dist/data/.gitkeep
+
           echo "Contenido del paquete:"
           find dist -maxdepth 3 -print
+
+      - name: Subir artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: AulaReserva-${{ vars.APP_ENV }}-${{ github.run_number }}
+          path: dist/
+          if-no-files-found: error
 
