@@ -1,23 +1,33 @@
-
 // Dirección del backend PHP
-const API = "http://localhost:8000/api";
+const API = "/api";
 
-// Elementos del HTML
+const configuracion = window.APP_CONFIG || {
+    nombre: "AulaReserva",
+    entorno: "development"
+};
+
+// Elementos HTML
 const contenedor = document.getElementById("lista-aulas");
 const selectorAula = document.getElementById("aula");
 const formulario = document.getElementById("formulario-reserva");
 const mensaje = document.getElementById("mensaje");
 const listaReservas = document.getElementById("lista-reservas");
+const contador = document.getElementById("contador-reservas");
 
+// Mostrar nombre y entorno
+document.getElementById("nombre-app").textContent = configuracion.nombre;
+
+document.getElementById("entorno-app").textContent =
+    configuracion.entorno === "production"
+        ? "Producción"
+        : "Desarrollo";
 
 // ==========================================
-// 1. CARGAR LAS AULAS DESDE SQLITE
+// 1. CARGAR AULAS
 // ==========================================
 
 async function cargarAulas() {
-
     try {
-
         const respuesta = await fetch(`${API}/aulas`);
 
         if (!respuesta.ok) {
@@ -27,11 +37,11 @@ async function cargarAulas() {
         const aulas = await respuesta.json();
 
         contenedor.innerHTML = "";
-        selectorAula.innerHTML = '<option value="">Selecciona un aula</option>';
+        selectorAula.innerHTML =
+            '<option value="">Selecciona un aula</option>';
 
         aulas.forEach(aula => {
 
-            // Crear tarjeta del aula
             const tarjeta = document.createElement("article");
             tarjeta.classList.add("tarjeta");
 
@@ -40,37 +50,29 @@ async function cargarAulas() {
 
             const capacidad = document.createElement("p");
             capacidad.textContent =
-                "Capacidad: " + aula.capacidad + " personas";
+                `Capacidad: ${aula.capacidad} personas`;
 
-            tarjeta.appendChild(nombre);
-            tarjeta.appendChild(capacidad);
-
+            tarjeta.append(nombre, capacidad);
             contenedor.appendChild(tarjeta);
 
-            // Añadir aula al selector
             const opcion = document.createElement("option");
-
             opcion.value = aula.id;
             opcion.textContent = aula.nombre;
 
             selectorAula.appendChild(opcion);
-
         });
 
     } catch (error) {
-
         contenedor.textContent = "No se pudieron cargar las aulas.";
         console.error(error);
-
     }
 }
-
 
 // ==========================================
 // 2. CREAR UNA RESERVA
 // ==========================================
 
-formulario.addEventListener("submit", async function(event) {
+formulario.addEventListener("submit", async event => {
 
     event.preventDefault();
 
@@ -81,47 +83,34 @@ formulario.addEventListener("submit", async function(event) {
         responsable: document.getElementById("responsable").value.trim()
     };
 
-    // Comprobar campos obligatorios
     if (
         !reserva.aula ||
         !reserva.fecha ||
         !reserva.hora ||
         !reserva.responsable
     ) {
-
-        mensaje.textContent = "Debes completar todos los campos.";
-        mensaje.style.color = "red";
+        mostrarMensaje("Completa todos los campos.", "error");
         return;
-
     }
 
-    // Comprobar que la fecha no sea pasada
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
 
     const fechaReserva = new Date(reserva.fecha + "T00:00:00");
 
     if (fechaReserva < hoy) {
-
-        mensaje.textContent = "No puedes seleccionar una fecha pasada.";
-        mensaje.style.color = "red";
+        mostrarMensaje("No puedes seleccionar una fecha pasada.", "error");
         return;
-
     }
 
     try {
 
-        // Enviar reserva a PHP
         const respuesta = await fetch(`${API}/reservas`, {
-
             method: "POST",
-
             headers: {
                 "Content-Type": "application/json"
             },
-
             body: JSON.stringify(reserva)
-
         });
 
         const resultado = await respuesta.json();
@@ -132,32 +121,22 @@ formulario.addEventListener("submit", async function(event) {
             );
         }
 
-        // Mostrar confirmación
-        mensaje.textContent = resultado.mensaje;
-        mensaje.style.color = "green";
+        mostrarMensaje(resultado.mensaje, "exito");
 
-        // Limpiar formulario
         formulario.reset();
 
-        // Actualizar las reservas desde SQLite
         await cargarReservas();
-
-        console.log("Reserva guardada:", resultado.reserva);
 
     } catch (error) {
 
-        mensaje.textContent = error.message;
-        mensaje.style.color = "red";
-
+        mostrarMensaje(error.message, "error");
         console.error(error);
 
     }
-
 });
 
-
 // ==========================================
-// 3. CONSULTAR LAS RESERVAS DE SQLITE
+// 3. CONSULTAR RESERVAS
 // ==========================================
 
 async function cargarReservas() {
@@ -174,58 +153,78 @@ async function cargarReservas() {
 
         listaReservas.innerHTML = "";
 
+        // Actualizar contador
+        contador.textContent = reservas.length;
+
         if (reservas.length === 0) {
 
-            listaReservas.textContent = "Todavía no hay reservas registradas.";
-            return;
+            const fila = document.createElement("tr");
+            const celda = document.createElement("td");
 
+            celda.colSpan = 5;
+            celda.textContent = "Todavía no hay reservas registradas.";
+
+            fila.appendChild(celda);
+            listaReservas.appendChild(fila);
+
+            return;
         }
 
         reservas.forEach(reserva => {
 
-            // Crear tarjeta de reserva
-            const tarjeta = document.createElement("article");
-            tarjeta.classList.add("tarjeta");
+            const fila = document.createElement("tr");
 
-            const titulo = document.createElement("h3");
-            titulo.textContent = reserva.aula;
+            const datos = [
+                reserva.aula,
+                reserva.fecha,
+                reserva.hora,
+                reserva.responsable
+            ];
 
-            const fecha = document.createElement("p");
-            fecha.textContent = "Fecha: " + reserva.fecha;
+            datos.forEach(valor => {
 
-            const hora = document.createElement("p");
-            hora.textContent = "Hora: " + reserva.hora;
+                const celda = document.createElement("td");
+                celda.textContent = valor;
 
-            const responsable = document.createElement("p");
-            responsable.textContent =
-                "Responsable: " + reserva.responsable;
+                fila.appendChild(celda);
+
+            });
+
+            const celdaAcciones = document.createElement("td");
 
             const botonCancelar = document.createElement("button");
-            botonCancelar.textContent = "Cancelar reserva";
 
-            botonCancelar.addEventListener("click", function() {
+            botonCancelar.textContent = "Cancelar";
+            botonCancelar.classList.add("boton-cancelar");
+
+            botonCancelar.addEventListener("click", () => {
                 cancelarReserva(reserva.id);
             });
 
-            tarjeta.appendChild(titulo);
-            tarjeta.appendChild(fecha);
-            tarjeta.appendChild(hora);
-            tarjeta.appendChild(responsable);
-            tarjeta.appendChild(botonCancelar);
+            celdaAcciones.appendChild(botonCancelar);
+            fila.appendChild(celdaAcciones);
 
-            listaReservas.appendChild(tarjeta);
+            listaReservas.appendChild(fila);
 
         });
 
     } catch (error) {
 
-        listaReservas.textContent = "No se pudieron cargar las reservas.";
+        listaReservas.innerHTML = "";
+
+        const fila = document.createElement("tr");
+        const celda = document.createElement("td");
+
+        celda.colSpan = 5;
+        celda.textContent = "No se pudieron cargar las reservas.";
+
+        fila.appendChild(celda);
+        listaReservas.appendChild(fila);
+
         console.error(error);
 
     }
-
 }
-
 
 // ==========================================
 // 4. CANCELAR UNA RESERVA
@@ -244,9 +243,7 @@ async function cancelarReserva(id) {
     try {
 
         const respuesta = await fetch(`${API}/reservas/${id}`, {
-
             method: "DELETE"
-
         });
 
         const resultado = await respuesta.json();
@@ -257,26 +254,32 @@ async function cancelarReserva(id) {
             );
         }
 
-        mensaje.textContent = resultado.mensaje;
-        mensaje.style.color = "green";
+        mostrarMensaje(resultado.mensaje, "exito");
 
-        // Actualizar listado
         await cargarReservas();
 
     } catch (error) {
 
-        mensaje.textContent = error.message;
-        mensaje.style.color = "red";
-
+        mostrarMensaje(error.message, "error");
         console.error(error);
 
     }
+}
+
+// ==========================================
+// 5. MOSTRAR MENSAJES
+// ==========================================
+
+function mostrarMensaje(texto, tipo) {
+
+    mensaje.textContent = texto;
+
+    mensaje.className = tipo;
 
 }
 
-
 // ==========================================
-// 5. INICIAR LA APLICACIÓN
+// 6. INICIAR AULARESERVA
 // ==========================================
 
 cargarAulas();

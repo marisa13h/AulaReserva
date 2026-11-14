@@ -1,52 +1,108 @@
+
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>AulaReserva</title>
-  </head>
 
-  <body>
-    <div class="contenedor">
-      <h1>AulaReserva</h1>
+    <link rel="stylesheet" href="/assets/styles.css">
 
-      <h2>Aulas disponibles</h2>
+    <script src="/assets/config.js"></script>
+    <script src="/assets/app.js" defer></script>
+</head>
 
-      <section id="lista-aulas">Cargando aulas...</section>
+<body>
 
-      <h2>Solicitar una reserva</h2>
+    <header class="cabecera">
+        <div class="cabecera-contenido">
+            <h1 id="nombre-app">AulaReserva</h1>
+            <span id="entorno-app" class="etiqueta-entorno">
+                Desarrollo
+            </span>
+        </div>
+    </header>
 
-      <form id="formulario-reserva">
-        <label for="aula">Selecciona un aula:</label>
-        <select id="aula" required>
-          <option value="">Selecciona un aula</option>
-        </select>
+    <main class="contenedor">
 
-        <label for="fecha">Fecha:</label>
-        <input type="date" id="fecha" required />
+        <section class="panel">
+            <h2>Aulas disponibles</h2>
+            <div id="lista-aulas" class="lista-aulas">
+                Cargando aulas...
+            </div>
+        </section>
 
-        <label for="hora">Hora:</label>
-        <input type="time" id="hora" required />
+        <section class="panel resumen">
+            <h2>Resumen de reservas</h2>
+            <p>
+                Reservas activas:
+                <strong id="contador-reservas">0</strong>
+            </p>
+        </section>
 
-        <label for="responsable">Responsable:</label>
-        <input
-          type="text"
-          id="responsable"
-          placeholder="Nombre del responsable"
-          required
-        />
+        <section class="panel">
+            <h2>Solicitar una reserva</h2>
 
-        <button type="submit">Solicitar reserva</button>
+            <form id="formulario-reserva">
 
-        <p id="mensaje"></p>
-      </form>
+                <label for="aula">Selecciona un aula:</label>
+                <select id="aula" required>
+                    <option value="">Selecciona un aula</option>
+                </select>
 
-      <section>
-        <h2>Reservas registradas</h2>
-        <div id="lista-reservas">Cargando reservas...</div>
-      </section>
-    </div>
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" required>
 
-    <script src="app.js" defer></script>
-  </body>
+                <label for="hora">Hora:</label>
+                <input type="time" id="hora" required>
+
+                <label for="responsable">Responsable:</label>
+                <input
+                    type="text"
+                    id="responsable"
+                    placeholder="Nombre del responsable"
+                    required
+                >
+
+                <button type="submit">
+                    Solicitar reserva
+                </button>
+
+                <p id="mensaje" role="status" aria-live="polite"></p>
+
+            </form>
+        </section>
+
+        <section class="panel">
+            <h2>Reservas registradas</h2>
+
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aula</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Responsable</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="lista-reservas">
+                        <tr>
+                            <td colspan="5">Cargando reservas...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>AulaReserva · Gestión de reservas de aulas</p>
+    </footer>
+
+</body>
 </html>
