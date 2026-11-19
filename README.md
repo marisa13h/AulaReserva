@@ -9,7 +9,7 @@ AulaReserva es una aplicación web destinada a consultar aulas disponibles y ges
 - CSS3
 - JavaScript
 - PHP
-- GitHub Actions
+- GitHub Actions.
 
 ## Estructura
 

@@ -45,4 +45,4 @@ jobs:
         with:
           name: AulaReserva-${{ vars.APP_ENV }}-${{ github.run_number }}
           path: dist/
-          if-no-files-found: error
+          if-no-files-found: error    
