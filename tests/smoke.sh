@@ -9,7 +9,7 @@ DATE="2030-06-15"
 CODE=$(curl -sS -o "$TMP/creada.json" -w '%{http_code}' -X POST "$BASE/api/reservas" -H 'Content-Type: application/json' -d '{"aula":1,"fecha":"2030-06-15","hora":"10:00","responsable":"Prueba Actions"}')
 echo "HTTP POST /api/reservas: $CODE | BODY: $(cat "$TMP/creada.json")" >&2
 test "$CODE" = 201
-ID=$(php -r '$j=json_decode(file_get_contents($argv),true);echo $j["id"]??$j["reserva"]["id"]??"";' "$TMP/creada.json")
+ID=$(php -r '$j=json_decode(file_get_contents($argv[1]),true);echo $j["id"]??$j["reserva"]["id"]??"";' "$TMP/creada.json")
 if [ -z "$ID" ]; then
   ID=$(curl -fsS "$BASE/api/reservas" | php -r '$j=json_decode(stream_get_contents(STDIN),true);$list=is_array($j)&&array_is_list($j)?$j:($j["reservas"]??[]);echo $list["id"]??"";')
 fi
