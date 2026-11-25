@@ -7,6 +7,7 @@ curl -fsS "$BASE/api/health" | php -r '$j=json_decode(stream_get_contents(STDIN)
 curl -fsS "$BASE/api/aulas" | php -r '$j=json_decode(stream_get_contents(STDIN),true);$list=is_array($j)&&array_is_list($j)?$j:($j["aulas"]??[]);exit(count($list)>=3?0:1);'
 DATE="2030-06-15"
 CODE=$(curl -sS -o "$TMP/creada.json" -w '%{http_code}' -X POST "$BASE/api/reservas" -H 'Content-Type: application/json' -d '{"aula_id":1,"fecha":"2030-06-15","hora":"10:00","responsable":"Prueba Actions"}')
+echo "HTTP POST /api/reservas: $CODE | BODY: $(cat "$TMP/creada.json")" >&2
 test "$CODE" = 201
 ID=$(php -r '$j=json_decode(file_get_contents($argv[1]),true);echo $j["id"]??"";' "$TMP/creada.json")
 test -n "$ID"
