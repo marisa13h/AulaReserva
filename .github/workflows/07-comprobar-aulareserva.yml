@@ -1,0 +1,43 @@
+name: 07 - Comprobar AulaReserva
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el proyecto
+        uses: actions/checkout@v7
+
+      - name: Preparar PHP con SQLite
+        uses: shivammathur/setup-php@v2.40
+        with:
+          php-version: '8.3'
+          extensions: pdo_sqlite, sqlite3
+
+      - name: Comprobar sintaxis PHP
+        run: find backend -name '*.php' -print0 | xargs -0 -n 1 php -l
+      - name: Preparar base de datos de pruebas
+        run: |
+          sqlite3 "$RUNNER_TEMP/aulareserva-pruebas.sqlite" < database/schema.sql
+
+      - name: Arrancar AulaReserva
+        run: |
+          echo "DB_PATH=$RUNNER_TEMP/aulareserva-pruebas.sqlite" >> "$GITHUB_ENV"
+          DB_PATH="$RUNNER_TEMP/aulareserva-pruebas.sqlite" php -S 127.0.0.1:8000 -t backend/public backend/public/router.php > "$RUNNER_TEMP/aulareserva.log" 2>&1 &
+          for intento in 1 2 3 4 5 6 7 8 9 10; do
+            if curl -fsS http://127.0.0.1:8000/api/health > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat "$RUNNER_TEMP/aulareserva.log"
+          exit 1
+
+      - name: Comprobar pagina web
+        run: curl -fsS http://127.0.0.1:8000/ | grep -qi 'AulaReserva'
+
+      - name: Probar aulas y reservas
+        run: bash tests/smoke.sh
