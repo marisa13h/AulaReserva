@@ -43,6 +43,9 @@ jobs:
       - name: Probar aulas y reservas
         run: |
           bash -c 'set -euo pipefail; trap "echo \"FALLO en línea \$LINENO: \$BASH_COMMAND\" >&2" ERR; source tests/smoke.sh' || {
+            echo "--- Respuesta /api/aulas ---"
+            curl -sS http://127.0.0.1:8000/api/aulas || true
+            echo ""
             echo "--- Log de AulaReserva ---"
             cat "$RUNNER_TEMP/aulareserva.log" || true
             exit 1
