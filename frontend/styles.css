@@ -1,0 +1,236 @@
+/* =====================================
+   ESTILOS GENERALES
+===================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+/* =====================================
+   CABECERA
+===================================== */
+
+.cabecera {
+    background: #1e3a8a;
+    color: white;
+    padding: 22px;
+}
+
+.cabecera-contenido {
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.cabecera h1 {
+    margin: 0;
+}
+
+.etiqueta-entorno {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+/* =====================================
+   CONTENEDOR Y PANELES
+===================================== */
+
+.contenedor {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.panel {
+    background: white;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.panel h2 {
+    margin-top: 0;
+    color: #1e3a8a;
+}
+
+/* =====================================
+   TARJETAS DE AULAS
+===================================== */
+
+.lista-aulas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.tarjeta {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.tarjeta h3 {
+    color: #1e40af;
+}
+
+/* =====================================
+   FORMULARIO
+===================================== */
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 16px;
+}
+
+button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.boton-cancelar {
+    background: #dc2626;
+}
+
+.boton-cancelar:hover {
+    background: #b91c1c;
+}
+
+/* =====================================
+   MENSAJES
+===================================== */
+
+#error {
+    color: #dc2626;
+}
+
+.error {
+    color: #dc2626;
+    font-weight: bold;
+}
+
+.exito {
+    color: #15803d;
+    font-weight: bold;
+}
+
+/* =====================================
+   CONTADOR
+===================================== */
+
+.resumen {
+    border-left: 5px solid #2563eb;
+}
+
+#contador-reservas {
+    color: #2563eb;
+    font-size: 28px;
+}
+
+/* =====================================
+   TABLA DE RESERVAS
+===================================== */
+
+.tabla-contenedor {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+th,
+td {
+    padding: 13px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+th {
+    background: #eff6ff;
+    color: #1e3a8a;
+}
+
+/* =====================================
+   FOOTER
+===================================== */
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #64748b;
+}
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width: 768px) {
+
+    .lista-aulas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cabecera-contenido {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .lista-aulas {
+        grid-template-columns: 1fr;
+    }
+
+    .panel {
+        padding: 16px;
+    }
+
+    .contenedor {
+        padding: 0 12px;
+    }
+
+}
+
